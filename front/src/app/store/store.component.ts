@@ -1,7 +1,8 @@
 // app.component.ts
 import { Component } from '@angular/core';
 import { Store, props } from '@ngrx/store';
-import { increment, decrement } from './../../services/actions';
+import { increment, decrement, reset } from './../../services/actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-store',
@@ -10,13 +11,16 @@ import { increment, decrement } from './../../services/actions';
       <p>Count: {{ count$ | async }}</p>
       <button (click)="increment()">Increment</button>
       <button (click)="decrement()">Decrement</button>
+      <button (click)="reset()">Reset</button>
     </div>
   `
 })
 export class StoreComponent {
-  count$ = this.store.select(x => {console.log(x)});
+  count$: Observable<number>
 
-  constructor(private store: Store) {}
+  constructor(private store: Store<{ count: number }>) {
+    this.count$ = store.select('count');
+  }
 
   increment() {
     this.store.dispatch(increment());
@@ -24,5 +28,9 @@ export class StoreComponent {
 
   decrement() {
     this.store.dispatch(decrement());
+  }
+
+  reset() {
+    this.store.dispatch(reset());
   }
 }

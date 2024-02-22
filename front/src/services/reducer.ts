@@ -6,5 +6,6 @@ export const initialState = 0;
 export const counterReducer = createReducer(
   initialState,
   on(Actions.increment, (state) => state + 1),
-  on(Actions.decrement, (state) => state - 1)
+  on(Actions.decrement, (state) => state - 1),
+  on(Actions.reset, (state) => state = 0)
 );
